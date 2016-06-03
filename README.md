@@ -1,11 +1,17 @@
 ![](https://raw.githubusercontent.com/jagracey/PhantomScript/020172df875ae4dacac9f719228f7746ad34b98b/resources/phantomScript.jpg)
 
 
-### A better way to execute arbitrary invisible code using a little social engineering.
-Once the decoder script is added- we can set the decoder function to just about any variable for some great fun.
+# Executing arbitrary invisible code using a little social engineering.
+
+To start, paste the following script into your browser's console. If you don't trust this code (which is entirely fair), you can read, trust, then copy the decodedEval script from [the end of the README](README.md#user-content-add-in-the-decodereval-script). We'll go over obfuscation and minification later on.
+```javascript
+var decode=function(val){return Array.from(val).map(x=>x.charCodeAt()).filter(x=>(x===0||x===65279)).map(x=>x&1).join('').match(/.{8}/g).map(function(c){return String.fromCharCode(parseInt(c,2))}).join('');};var decodedEval=function(code){[]["filter"]["constructor"](decode(code))();};
+```
+
+Now that the decoder script is added- we can set the decoder function to just about any variable we want for some great fun.
 
 
-### Delightfully familiar Examples
+# Delightfully familiar Examples
 0.
 <strong><a id="jquery" href="#jquery">Seem familiar?</a></strong>
 ```javascript
@@ -145,7 +151,7 @@ if ( myVarꘌꘌꘌ`﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿
 <br>
 
 
-## Add in the "decoderEval" script:
+# Add in the "decoderEval" script:
 *Remember, this would normally be obfuscated- yet friendly looking*
 
 ```javascript
@@ -177,7 +183,7 @@ if ( myVarꘌꘌꘌ`﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿
 
 ```
 
-#### The Encoder
+# The Encoder
 *This parts for you to encode whatever you want. Note that all non-ascii characters are converted to unicode code point escaping. This keeps the payload more dense- after all, out of the 10FFFF (allocated) unicode code points, it would take 21 invisible characters to encode one visible character.*
 ```javascript
 
@@ -256,7 +262,7 @@ var debug =  ( str => String.apply.constructor(str)() );
 
 
 
-### How is this possible?
+# How is this possible?
 It's actually quite easy to save data with invisible, zero-width characters in Unicode. Currently, only U+0000 and U+FFEF are used for broad compatibility, but certainly there are many many characters to choose from out of the 1.1 million (allocated) unicode code points from the 17 Astrals planes. It might be worth mentioning only ~120,000 characters are actually currently defined in Unicode 8.0, but there are lots of combinations possible with the diacritics etc.
 
 The harder and more critical work is the social engineering aspect. ECMAScript 6 has made a big push for internationalizing characters, and as such now permits unicode in variable names using [Unicode Code Point Escape Sequences](https://github.com/jagracey/Awesome-Unicode#creatively-naming-variables-and-methods).
@@ -268,23 +274,16 @@ Here are some valid variable names to further pique your interest.
  - `ꓹ`   `\u{A4F9}`
  - `ꓼ`   `\u{A4FC}`
  - `ꓽ`   `\u{A4FD}`
+ - 
+<br>
 
-#### See [Awesome-Unicode](https://github.com/jagracey/Awesome-Unicode) for a whole lot more about Unicode, especially its quirks and capabilities.
+### :thumbsup: See [Awesome-Unicode](https://github.com/jagracey/Awesome-Unicode) for a whole lot more about Unicode, especially its quirks and capabilities. :ok_hand:
+<br>
 
-
-### Limitations
+# Limitations
 Many font packages do not support the characters you wish to use, representing characters as boxes or question marks.  Try and stick to the lower numbered characters.
 
 <br>
-
-## Ideas to explore (and submit back here)
-
-- U+1680 OGHAM SPACE MARK  ( looks like a dash, but acts as a space )
-- setTimeout('alert()', 0);
-- bind/call/apply
-- myArray.push("World");
-- while (true){ }
-- switch statements
 
 
 <br><br>
@@ -293,6 +292,16 @@ Many font packages do not support the characters you wish to use, representing c
 
 Contributions are absolutely welcome- and encouraged.
 Please do make sure that the Unicode characters used in your code actually show up in Github, the NodeJS REPL, and most major text editors.
+
+#### A few possible ideas to explore
+
+- U+1680 OGHAM SPACE MARK  ( looks like a dash, but acts as a space )
+- setTimeout('alert()', 0);
+- bind/call/apply
+- myArray.push("World");
+- while (true){ }
+- switch statements
+
 
 
 # License
