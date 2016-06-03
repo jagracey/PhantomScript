@@ -29,7 +29,7 @@ var \u{A4FC} = decodedEval;
 <strong><a id="cyrillic" href="#cyrillic">Cyrillic characters look normal!</a></strong>
 ```javascript
 // Using U+0441 CYRILLIC SMALL LETTER ES   (the "c" is different)
-var сonsole = { log: decodedEval; };
+var сonsole = { log: decodedEval };
 
 // the ES6 shorthand function call (the two backticks)
 сonsole.log('﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿Check Point');
@@ -53,11 +53,11 @@ var a = 𠂭`﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿�
 4.
 <strong><a id="overwride" href="#overwride">Overriding toString or console.log</a></strong>
 ```javascript
-// If someone overwrites toString or console.log with the decodeEval function then this should work:
+// If someone overwrites toString or console.log with the decodedEval function then this should work:
 '﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿'
 
 
-console.l\u{03BF}g = function(str){ decodeEval(str); return console.log(str); };
+console.l\u{03BF}g = function(str){ decodedEval(str); return console.log(str); };
 
 // Since visible text is filtered out, we can add normal looking text to fit in.
 // Also, the 'o' in log is U+03BF
@@ -79,20 +79,24 @@ anyObject.get('﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿�
 <strong><a id="bait-switch" href="bait-switch">We can trick the user with bait and switch tactics</a></strong>
 ```javascript
 // Using U+0441 CYRILLIC SMALL LETTER ES, again
-var funс = decodedEval('﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿');
+var funс1 = decodedEval;
+var funс2 = funс1.bind(this,'﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿');   // Yeah this ones basically static.
 
-var func = function(){}; // No Operation, but could be anything, since it isn't actually run.
-setTimeout(funс, 0);
 
-// OR
-function func(thing){
+// Bait and Switched.
+var func2 = function(){}; // No Operation, but could be anything, since it isn't actually run.
+setTimeout(funс2, 0);
+
+
+// OR another switch
+function func1(thing){
     return thing.toUpperCase();
 }
-funс('﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿');
+funс1('﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿');
 
 // or even better:
-var func = decodedEval.bind(this,'﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿');
-fooStr.replace(/Whatever Regex Here/,funс);
+fooStr = 'bar';
+fooStr.replace(/bar|Whatever Regex Here/,funс2);
 
 ```
 
@@ -100,7 +104,7 @@ fooStr.replace(/Whatever Regex Here/,funс);
 <strong><a id="assignment" href="assignment">Faked Variable Assignment</a></strong>
 ```javascript
 // Hide this away somewhere. Uses the U+A60C VAI SYLLABLE LENGTHENER character (=)
-var \u{A60C}= function(x){ decodedEval(x.raw[0]) };
+var input\u{A60C}= function(x){ decodedEval(x.raw[0]) };
 
 const input;
 inputꘌ`﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿`;
@@ -112,10 +116,10 @@ inputꘌ`﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿�
 <strong><a id="conditional" href="conditional">Faked Conditional</a></strong>
 ```javascript
 // Hide this away somewhere. Uses the U+A60C VAI SYLLABLE LENGTHENER character (=)
-var myVar\u{A60C}\u{A60C} = function(x){ decodedEval(x.raw[0]) };
+var myVar\u{A60C}\u{A60C}\u{A60C} = function(x){ decodedEval(x.raw[0]) };
 
 // The triple equal sign  (Strict Equality Comparison) isn't a real.
-if ( myVarꘌꘌꘌ`hello` ){
+if ( myVarꘌꘌꘌ`﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿hello` ){
  // Random code from MDN below:
  var Person = function (firstName) {
     this.firstName = firstName;
@@ -158,10 +162,13 @@ if ( myVarꘌꘌꘌ`hello` ){
   /**
   * Decoder
   */
+
   var decode = function(val){
     return Array
       .from(val)
-      .map(x=>x.charCodeAt() && 1 )
+      .map(x=>x.charCodeAt() )
+      .filter(x=>(x === 0 || x === 65279 ))
+      .map(x=>x & 1)
       .join('')
       .match(/.{8}/g)
       .map(function(c){
@@ -222,14 +229,17 @@ if ( myVarꘌꘌꘌ`hello` ){
 
 // You could split up the core functionality a bit more.
 var debugFormatter = function(array){
-  return array
-      .map(x=>x.charCodeAt() && 1 )
-      .join('')
-      .match(/.{8}/g)
-      .map(function(c){
-         return String.fromCharCode(parseInt(c,2))
-      })
-      .join('');
+  return Array
+    .from(val)
+    .map(x=>x.charCodeAt() )
+    .filter(x=>(x === 0 || x === 65279 ))
+    .map(x=>x & 1)
+    .join('')
+    .match(/.{8}/g)
+    .map(function(c){
+       return String.fromCharCode(parseInt(c,2))
+    })
+    .join('');
 };
 
 // Eval/Function can be assigned to a friendly variable. Strings can do no wrong, right?  ಠ_ಠ
@@ -237,7 +247,7 @@ var debug =  ( str => String.apply.constructor(str)() );
 
 
 
-// Using the above, decodeEval to be renamed and defined as such, with some comments.
+// Using the above, decodedEval to be renamed and defined as such, with some comments.
 
 
     /*

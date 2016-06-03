@@ -37,9 +37,12 @@
   * Decoder
   */
   var decode = function(val){
+
     return Array
       .from(val)
-      .map(x=>x.charCodeAt() && 1 )
+      .map(x=>x.charCodeAt() )
+      .filter(x=>(x === 0 || x === 65279 ))
+      .map(x=>x & 1)
       .join('')
       .match(/.{8}/g)
       .map(function(c){
