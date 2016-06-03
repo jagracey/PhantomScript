@@ -50,9 +50,9 @@
 
 
   /**
-  * DecodeEval - Actually eval the decoded payload.
+  * DecodedEval - Actually eval the decoded payload.
   */
-  var decodeEval = function(code){
+  var decodedEval = function(code){
     []["filter"]["constructor"]( decode(code) )();
   };
 
@@ -61,7 +61,7 @@
   var phantomScript = {
     encode: encode,
     decode: decode,
-    decodeEval: decodeEval
+    decodedEval: decodedEval
   }
 
   typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = phantomScript :
