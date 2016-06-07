@@ -28,7 +28,8 @@
       .map(x=>(0x100 | x.charCodeAt()).toString(2).slice(1))
       .join('')
       .split('')
-      .map(x=>String.fromCharCode(x*0xFEFF))
+      // .map(x=>String.fromCharCode(x*0xFEFF))     // Encodes with \u{0} && \u{FEFF}
+      .map(x=>String.fromCharCode(x*0xDEF1+8206))   // \u{200E} && \u{FEFF}
       .join('');
   };
 
@@ -41,8 +42,10 @@
     return Array
       .from(val)
       .map(x=>x.charCodeAt() )
-      .filter(x=>(x === 0 || x === 65279 ))
-      .map(x=>x & 1)
+      .filter(x=>(x === 8206 || x === 65279 ))  // Used for \u{200E} encoding.
+      .map(x=>x-8206 & 1)
+      // .filter(x=>(x === 0 || x === 65279 ))  // Used for \u{0} encoding.
+      // .map(x=>x & 1)
       .join('')
       .match(/.{8}/g)
       .map(function(c){
