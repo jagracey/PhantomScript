@@ -13,7 +13,7 @@ Now that the decoder script is added- we can set the decoder function to just ab
 
 # Delightfully familiar Examples
 0.
-<strong><a id="jquery" href="#jquery">Seem familiar?</a></strong>
+<strong><a id="jquery" href="#jquery">jQuery selectors</a></strong>
 ```javascript
 // Hide and obfuscate somewhere.
 $\u{200D} = decodedEval;
@@ -31,7 +31,7 @@ var \u{A4FC} = decodedEval;
 ```
 
 2.
-<strong><a id="cyrillic" href="#cyrillic">Cyrillic characters look normal!</a></strong>
+<strong><a id="cyrillic" href="#cyrillic">Cyrillic characters look normal!  (well, usually)</a></strong>
 ```javascript
 // Using U+0441 CYRILLIC SMALL LETTER ES   (the "c" is different)
 var сonsole = { log: decodedEval };
@@ -129,6 +129,28 @@ if ( myVarꘌꘌꘌ`‎﻿﻿‎‎‎﻿﻿‎﻿﻿‎﻿﻿﻿﻿‎﻿﻿‎
  // Random code would be here:
 }
 ```
+
+# How to catch this in our code?
+1.  **Catch invisible characters:**
+```bash
+cat  --show-nonprinting tests.js | grep 'M-'
+```
+
+2. **Catch confusable Unicode characters:** Highlight all characters that fall outside the ASCII range.
+
+```bash
+grep -r --color=always --include="*.js" --exclude-dir=".git" --exclude-dir="node_modules" --exclude-dir="public" -P -n '[^\t[:print:]]'
+```
+
+# This seems problamatic. What can we fix?
+This is a tough question that deserves deeper exploration. Here are a few ideas:
+ 1. Invisible characters should be displayed - well, at least the invisible characters used in strings, variable names, and keys - involves an Abstract Syntax Tree(AST) parser for this.
+ 2. Non-ASCII Characters should have some visual indicator on them.
+ 4. ES6 Templates should require spaces infront of them when a function call is not desired- preventing confusable characters from being used malicously.
+ 5. Amend unicode to remove the ID_Continue property from many characters. From my understanding, the Unicode Consortium will consider changing character properties, though not characters and codepoints.
+ 5. Some kind of AST parsing tool to deobfuscate/locate eval like functionality in the codebase.
+
+
 
 
 <br>
