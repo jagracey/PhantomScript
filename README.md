@@ -3,12 +3,22 @@
 
 # Executing arbitrary invisible code using a little social engineering.
 
+<br>
+
+# Foreword:
+Different fonts and IDEs handle zero-width and confuseable characters differently. For example, Vim is particularily great at catching *most* zero-width characters, though certain characters like U+2060 (WORD JOINER) often make it through. Atom in particular catches very few characters. Your results may vary.
+
+
+
+<br> 
+# Quickstart
 To start, paste the following script into your browser's console. If you don't trust this code (which is entirely fair), you can read, trust, then copy the decodedEval script from [the end of the README](README.md#user-content-add-in-the-decodereval-script). We'll go over obfuscation and minification later on.
 ```javascript
 var decode=function(val){return Array.from(val).map(x=>x.charCodeAt()).filter(x=>(x===8206||x===65279)).map(x=>x-8206&1).join('').match(/.{8}/g).map(function(c){return String.fromCharCode(parseInt(c,2))}).join('');};var decodedEval=function(code){[]["filter"]["constructor"](decode(code))();};
 ```
 
 Now that the decoder script is added- we can set the decoder function to just about any variable we want for some great fun.
+
 
 
 # Delightfully familiar Examples
@@ -131,6 +141,10 @@ if ( myVarꘌꘌꘌ`‎﻿﻿‎‎‎﻿﻿‎﻿﻿‎﻿﻿﻿﻿‎﻿﻿‎
 ```
 
 # How to catch this in our code?
+Vim by default provides pretty good support for detecting unprintable/zero-width characters- though not perfectly. There are also a few plugins for various IDEs to highlight confusable characters.
+
+For those who do not use Vim, you can use Grep & Cat:
+
 1.  **Catch invisible characters:**
 ```bash
 cat  --show-nonprinting tests.js | grep 'M-'
@@ -143,12 +157,7 @@ grep -r --color=always --include="*.js" --exclude-dir=".git" --exclude-dir="node
 ```
 
 # This seems problamatic. What can we fix?
-This is a tough question that deserves deeper exploration. Here are a few ideas:
- 1. Invisible characters should be displayed - well, at least the invisible characters used in strings, variable names, and keys - involves an Abstract Syntax Tree(AST) parser for this.
- 2. Non-ASCII Characters should have some visual indicator on them.
- 4. ES6 Templates should require spaces infront of them when a function call is not desired- preventing confusable characters from being used malicously.
- 5. Amend unicode to remove the ID_Continue property from many characters. From my understanding, the Unicode Consortium will consider changing character properties, though not characters and codepoints.
- 5. Some kind of AST parsing tool to deobfuscate/locate eval like functionality in the codebase.
+This is a tough question that deserves deeper exploration than what is provided here. Beyond IDE plugins, amending the Unicode standard to remove the ID_Continue property from quite a few more characters may a valid strategy. From my understanding, the Unicode Consortium will consider changing character properties, though not characters and codepoints.
 
 
 
